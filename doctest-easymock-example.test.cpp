@@ -82,6 +82,11 @@ TEST_CASE("类打桩")
 {
     SUBCASE("类静态函数")
     {
+        /*
+            在这个测试案例中，使用CREATE_MOCKER创建了一个指向MyClass类中Method1函数的指针，并使用EXPECT_CALL定义了该函数的期望行为。
+            接下来，通过接口指针调用了该类的Method1静态函数。
+            最后使用CLEAR_MOCKER清除了创建的模拟对象。
+        */
         auto mocker = CREATE_MOCKER(MyClass::Method1);
         //MOCK_FUNCTION 的括号内是有几个待定参数，里面有几个 _。其中this也算是一个待定参数
         //后面的其他部分遵循 gmock 的语法即可。
@@ -92,6 +97,13 @@ TEST_CASE("类打桩")
 
     SUBCASE("类成员函数")
     {
+        /*
+        在后面的测试中，使用了一个名为 CREATE_MOCKER 的函数来创建 MyClass::Method2 的模拟器，
+        并使用 EXPECT_CALL 和 WillOnce 函数定义了该函数的行为，期望该函数在执行一次后返回 114。
+
+        最后，使用 REQUIRE 函数检查函数的返回值是否与预期的 114 相等，
+        并使用 CLEAR_MOCKER 函数清空模拟器。
+        */
         auto mocker = CREATE_MOCKER(&MyClass::Method2);
         //MOCK_FUNCTION 的括号内是有几个待定参数，里面有几个 _。其中this也算是一个待定参数
         //后面的其他部分遵循 gmock 的语法即可。
@@ -123,6 +135,11 @@ TEST_CASE("特定的虚函数")
 
     SUBCASE("类成员函数（虚）")
     {
+        /*
+            在这个测试案例中，使用CREATE_MOCKER创建了一个指向Impl类中Func函数的指针，并使用EXPECT_CALL定义了该函数的期望行为。
+            接下来，创建了一个Impl对象，并通过接口指针调用了该对象的Func函数。
+            最后使用CLEAR_MOCKER清除了创建的模拟对象。
+        */
         auto mocker = CREATE_MOCKER(&Impl::Func);
         //MOCK_FUNCTION 的括号内是有几个待定参数，里面有几个 _。其中this也算是一个待定参数
         EXPECT_CALL(*mocker, MOCK_FUNCTION(testing::_, testing::_)).Times(::testing::Exactly(1)).WillOnce(::testing::Return(114));
